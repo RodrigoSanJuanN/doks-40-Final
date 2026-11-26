@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doks — Simple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/styles.css">
+</head>
+<body>
+
+  <!-- APP SHELL (Mismo diseño visual que el prototipo original) -->
+  <div id="appShell" style="display:flex;flex-direction:column;height:100vh">
+    <header class="topbar">
+      <div class="brand-group">
+        <div class="logo">Doks<span class="dot">.</span></div>
+        <!-- RU0028: Estructura minimalista de solo 2 vistas principales -->
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#" data-view="vista1" class="active">Proyecto y Equipo</a></li>
+            <li><a href="#" data-view="vista2">Requisitos y Tareas</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="user-profile">
+        <span class="mode-badge estandar" id="modeBadge">MODO ESTÁNDAR</span>
+        <div class="avatar" id="userAvatar">RO</div>
+        <div><div style="font-weight:600;font-size:.85rem" id="userName">—</div></div>
+        <button class="icon-btn" id="btnLogout" title="Salir">Salir</button>
+      </div>
+    </header>
+
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header"><span>Mi proyecto</span></div>
+        <div style="padding:0 .7rem">
+          <select id="projSelect" style="width:100%;border:1.5px solid var(--line);border-radius:6px;padding:.55rem;font-family:inherit;font-size:.82rem;background:#fff;color:var(--ink)"></select>
+        </div>
+
+        <div class="sidebar-header"><span>Modo de documentación</span></div>
+        <div style="padding:0 .7rem">
+          <select id="modeSelect" style="width:100%;border:1.5px solid var(--line);border-radius:6px;padding:.55rem;font-family:inherit;font-size:.82rem;background:#fff;color:var(--ink)">
+            <option value="Estándar">Modo Estándar</option>
+            <option value="Simplificado">Modo Simplificado</option>
+          </select>
+        </div>
+
+        <div class="sidebar-header"><span>Navegación</span></div>
+        <ul class="doc-nav-list">
+          <li><button class="doc-nav-item active" id="step1">1. Proyecto y Equipo</button></li>
+          <li><button class="doc-nav-item" id="step2">2. Requisitos y Tareas</button></li>
+        </ul>
+      </aside>
+
+      <main class="workspace">
+        <div class="project-banner">
+          <div>
+            <div class="project-title" id="projTitle">—</div>
+            <div class="project-meta" id="projMeta">—</div>
+          </div>
+          <div class="actions-group">
+            <span class="status-pill info" id="projStatsBadge">—</span>
+          </div>
+        </div>
+
+        <!-- =========================================================
+             VISTA 1: PROYECTO Y EQUIPO (RU0002, RU0003, RU0004, RU0017)
+             ========================================================= -->
+        <section id="view-vista1" class="view">
+          <div class="two-col">
+
+            <!-- RU0002 y RU0003: Crear y editar proyectos en el mismo formulario -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title" id="projFormTitle">Gestión del Proyecto</div>
+                </div>
+                <button type="button" class="btn btn-default btn-sm" id="btnNewProjMode">+ Nuevo proyecto</button>
+              </div>
+
+              <form id="projForm" novalidate>
+                <input type="hidden" id="projId" value="">
+                <div class="field">
+                  <label>Nombre del proyecto *</label>
+                  <input id="projNombre" type="text" placeholder="Ej: Proyecto 1">
+                  <div class="error-msg">Obligatorio: escribe al menos 4 letras.</div>
+                </div>
+                <div class="field">
+                  <label>Descripción del proyecto *</label>
+                  <textarea id="projDesc" rows="3" placeholder="Describe de qué trata el proyecto..."></textarea>
+                  <div class="error-msg">Obligatorio: escribe al menos 10 letras.</div>
+                </div>
+                <div class="field">
+                  <label>Modo de documentación</label>
+                  <select id="projModoForm">
+                    <option value="Estándar">Modo Estándar</option>
+                    <option value="Simplificado">Modo Simplificado</option>
+                  </select>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:.5rem">
+                  <button type="submit" class="btn btn-primary" id="btnSaveProj">Guardar cambios ✓</button>
+                </div>
+              </form>
+
+              <div style="margin-top:1.2rem;padding-top:1rem;border-top:2px solid var(--ink)">
+                <div style="font-weight:700;font-size:.85rem;margin-bottom:.6rem">Mis proyectos (toca uno para seleccionarlo y editarlo)</div>
+                <div class="elem-list" id="projList" style="margin-top:0"></div>
+              </div>
+            </div>
+
+            <!-- RU0004: Gestión de integrantes y asignación de roles -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Integrantes y Roles</div>
+                  <div class="card-sub">Agrega o quita usuarios asignándoles su rol en el proyecto.</div>
+                </div>
+              </div>
+
+              <form id="memberForm" novalidate>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Nombre del usuario *</label>
+                    <input id="memNombre" type="text" placeholder="Ej: Javier">
+                    <div class="error-msg">Obligatorio: mínimo 3 letras.</div>
+                  </div>
+                  <div class="field">
+                    <label>Rol asignado *</label>
+                    <select id="memRol">
+                      <option value="Jefe de proyecto">Jefe de proyecto</option>
+                      <option value="Analista">Analista</option>
+                      <option value="Diseñador">Diseñador</option>
+                      <option value="Tester">Tester</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end">
+                  <button type="submit" class="btn btn-primary">+ Agregar integrante</button>
+                </div>
+              </form>
+
+              <div style="margin-top:1.2rem;padding-top:1rem;border-top:2px solid var(--ink)">
+                <div style="font-weight:700;font-size:.85rem;margin-bottom:.6rem">Equipo actual del proyecto</div>
+                <div id="teamList"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- =========================================================
+             VISTA 2: REQUISITOS Y TAREAS (RU0005, RU0023, RU0024, RU0025)
+             ========================================================= -->
+        <section id="view-vista2" class="view hidden">
+          <div class="two-col">
+
+            <!-- RU0005: Gestión de Requisitos de Usuario -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title" id="ruFormTitle">Requisitos de Usuario</div>
+                  <div class="card-sub">Registra, edita y cambia la vigencia (Vigente / No vigente) de los requisitos de usuario.</div>
+                </div>
+                <button type="button" class="btn btn-default btn-sm hidden" id="btnCancelRuEdit">Cancelar edición</button>
+              </div>
+
+              <form id="ruForm" novalidate>
+                <input type="hidden" id="ruEditId" value="">
+                <div class="field">
+                  <label>Título del requisito *</label>
+                  <input id="ruTitulo" type="text" placeholder="Ej: Reservar por bloques">
+                  <div class="error-msg">Obligatorio: escribe al menos 4 letras.</div>
+                </div>
+                <div class="field">
+                  <label>Descripción *</label>
+                  <textarea id="ruDesc" rows="3" placeholder="El cliente puede reservar un juego en un bloque de horario..."></textarea>
+                  <div class="error-msg">Obligatorio: escribe al menos 10 letras.</div>
+                </div>
+
+                <!-- Campos adaptables según Modo Estándar / Simplificado (RU0017) -->
+                <div class="form-row" id="ruStandardFields">
+                  <div class="field">
+                    <label>Tipo</label>
+                    <select id="ruTipo">
+                      <option value="Funcional">Funcional</option>
+                      <option value="No funcional">No funcional</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Prioridad</label>
+                    <select id="ruPrio">
+                      <option value="Alta">Alta</option>
+                      <option value="Media">Media</option>
+                      <option value="Baja">Baja</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Vigencia *</label>
+                  <select id="ruVigencia">
+                    <option value="true">Vigente</option>
+                    <option value="false">No vigente</option>
+                  </select>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end">
+                  <button type="submit" class="btn btn-primary" id="btnSaveRu">+ Guardar requisito</button>
+                </div>
+              </form>
+
+              <div style="margin-top:1.2rem;padding-top:1rem;border-top:2px solid var(--ink)">
+                <div style="font-weight:700;font-size:.85rem;margin-bottom:.6rem">Lista de Requisitos de Usuario</div>
+                <div class="elem-list" id="ruList" style="margin-top:0"></div>
+              </div>
+            </div>
+
+            <!-- RU0023, RU0024, RU0025: Creación, asignación y fecha límite de tareas -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Tareas del Proyecto</div>
+                  <div class="card-sub">Registra tareas, elige al integrante responsable y establece la fecha límite de entrega.</div>
+                </div>
+              </div>
+
+              <form id="taskForm" novalidate>
+                <div class="field">
+                  <label>¿Qué hay que hacer? (Tarea) *</label>
+                  <input id="taskTitulo" type="text" placeholder="Ej: Probar el formulario de reservas">
+                  <div class="error-msg">Obligatorio: escribe al menos 4 letras.</div>
+                </div>
+                <div class="form-row">
+                  <div class="field">
+                    <label>Responsable (RU0024) *</label>
+                    <select id="taskResp"></select>
+                    <div class="error-msg">Elige un integrante del equipo.</div>
+                  </div>
+                  <div class="field">
+                    <label>Fecha límite (RU0025) *</label>
+                    <input id="taskFecha" type="date">
+                    <div class="error-msg">Selecciona una fecha válida.</div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end">
+                  <button type="submit" class="btn btn-primary">+ Agregar tarea</button>
+                </div>
+              </form>
+
+              <div style="margin-top:1.2rem;padding-top:1rem;border-top:2px solid var(--ink)">
+                <div style="font-weight:700;font-size:.85rem;margin-bottom:.6rem">Tareas registradas</div>
+                <div id="taskList"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+  <script src="src/js/store.js"></script>
+  <script src="src/js/validators.js"></script>
+  <script src="src/js/app.js"></script>
+</body>
+</html>

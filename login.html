@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doks — Simple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/styles.css">
+</head>
+<body>
+
+  <!-- RU0001: LOGIN SIMPLE (Diseño original intacto) -->
+  <div id="loginView" class="login-wrap">
+    <div class="login-hero">
+      <div class="login-pitch">
+        <span class="kicker">Expediente n.º 01</span>
+        <h1>Pon tu proyecto en orden.</h1>
+        <p>Doks guarda tus proyectos, tu equipo, tus requisitos y tus tareas en un solo expediente. Siempre sabes qué falta.</p>
+        <ol class="login-steps">
+          <li><span class="n">1</span><span>Configura tu proyecto y tu equipo </span></li>
+          <li><span class="n">2</span><span>Registra requisitos de usuario y tareas</span></li>
+        </ol>
+      </div>
+      <form id="loginForm" class="login-card" autocomplete="on" novalidate>
+        <div class="login-logo">Doks<span class="dot">.</span></div>
+        <div class="login-sub">Entra con tu email y tu contraseña para abrir tu expediente.</div>
+        <div class="field">
+          <label>Email</label>
+          <input id="loginEmail" type="email" value="UsuarioEjemplo@ejemplo.cl" required autocomplete="email">
+          <div class="error-msg">Escribe un email válido.</div>
+        </div>
+        <div class="field">
+          <label>Contraseña</label>
+          <input id="loginPass" type="password" value="demo123" required autocomplete="current-password">
+          <small>Demo: cualquier clave de 4 o más letras.</small>
+          <div class="error-msg">La contraseña debe tener 4 o más letras.</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" type="submit">Entrar</button>
+        <div style="margin-top:.7rem;text-align:center">
+          <button type="button" class="btn btn-default btn-sm" id="btnReset">Restablecer ejemplo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+  <script src="src/js/store.js"></script>
+  <script src="src/js/validators.js"></script>
+  <script src="src/js/auth.js"></script>
+</body>
+</html>
